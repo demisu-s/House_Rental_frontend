@@ -1,1 +1,1 @@
-# House_Rental_App
+# House Rental frontend using react and tailwind
