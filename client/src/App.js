@@ -4,6 +4,7 @@ import Dashboard from "./Pages/Dashboard"
 import Login from "./Pages/Login"
 import Register from "./Pages/Register"
 import LandingPage from './LandingPage';
+import CreateHouse from './Components/CreateHouse';
 
 
 function App() {
@@ -16,8 +17,9 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path='/createHouse' element={<CreateHouse/>}/>
         
-      </Routes>
+      </Routes> 
     </div>
   );
 }
