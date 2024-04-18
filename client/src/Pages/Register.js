@@ -11,7 +11,8 @@ const Register = () => {
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('user');
+  const [role, setRole] = useState('Tenant'); // Set the default role to 'Tenant'
+
   const [formErrors, setFormErrors] = useState({});
   const [photo, setPhoto] = useState({});
 
@@ -20,27 +21,27 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     //form validation
-    const errors = {};
-    if (!firstName.trim()) {
-      errors.firstName = 'First name is required';
-    }
-    if (!lastName.trim()) {
-      errors.lastName = 'Last name is required';
-    }
-    if (!email.trim()) {
-      errors.email = 'Email is required';
-    }
-    if (!password.trim()) {
-      errors.password = 'Password is required';
-    }
+    // const errors = {};
+    // if (!firstName.trim()) {
+    //   errors.firstName = 'First name is required';
+    // }
+    // if (!lastName.trim()) {
+    //   errors.lastName = 'Last name is required';
+    // }
+    // if (!email.trim()) {
+    //   errors.email = 'Email is required';
+    // }
+    // if (!password.trim()) {
+    //   errors.password = 'Password is required';
+    // }
 
     // Set form errors and prevent submission if there are errors
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
-    }
+    // if (Object.keys(errors).length > 0) {
+    //   setFormErrors(errors);
+    //   return;
+    // }
 
     const userData = {
       firstName,
@@ -162,18 +163,20 @@ const Register = () => {
             <label htmlFor="role" className="block text-gray-700 text-sm font-bold mb-2">
               Role:
               <select
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="role"
-                value={role}
-                onChange={(e) => {
-                  setRole(e.target.value);
-                }}
-              >
-                <option value="user">Tenant</option>
-                <option value="admin">Admin</option>
-                <option value="user">Landlord</option>
-                <option value="admin">Broker</option>
-              </select>
+  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+  id="role"
+  value={role}
+  onChange={(e) => {
+    setRole(e.target.value);
+  }}
+>
+  <option value="Landlord">Landlord</option>
+  <option value="Tenant">Tenant</option>
+  <option value="Admin">Admin</option>
+  <option value="Broker">Broker</option>
+  <option value="SuperAdmin">SuperAdmin</option>
+</select>
+
             </label>
           </div>
           

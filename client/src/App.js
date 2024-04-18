@@ -1,25 +1,111 @@
 import './App.css';
-import { Routes, Route } from "react-router-dom"
-import Dashboard from "./Pages/Dashboard"
-import Login from "./Pages/Login"
-import Register from "./Pages/Register"
+import { Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux"; // Added import for useSelector
+import Dashboard from "./Pages/Dashboard";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 import LandingPage from './LandingPage';
-import CreateHouse from './Components/CreateHouse';
+
+import AdminDashboard from './Pages/AdminPage/AdminDashboard';
+import BrokerDashboard from './Pages/BrokerPage/BrokerDashboard';
+import TenantDashboard from './Pages/TenantPage/TenantDashboard';
+import LandlordDashboard from './Pages/LandlordPage/LandlordDashboard';
+import HouseList from './Components/HouseList';
+import HouseCard from './Components/HouseCard';
+import Profile from './Components/Profile';
+import CreateUserPage from './Pages/AdminPage/CreateUserPage'; // Corrected import path
+import EditUserPage from './Pages/AdminPage/EditUserPage';
+import UserList from './Pages/AdminPage/UserList';
+import EditHouse from './Pages/EditHouse';
+import CreateHouse from './Pages/CreateHouse';
+import DetailHousePage from './Pages/DetailHousePage';
+import Bidding from './Pages/TenantPage/Bidding';
+
 
 
 function App() {
+  const { user } = useSelector((state) => state.user || {}); 
+  console.log(user);
+  const role_name = user && user.role ? user.role.role_name : null; 
+  console.log(role_name);
+
   return (
     <div className="App">
-      
-      
       <Routes>
-        <Route path='/' element={<LandingPage/>}></Route>
+        <Route path='/' element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/createHouse' element={<CreateHouse/>}/>
+        <Route path='/adminDashboard' element={<AdminDashboard />} />
+        <Route path='/brokerDashboard' element={<BrokerDashboard />} />
+        <Route path='/tenantDashboard' element={<TenantDashboard />} />
+        <Route path='/landlordDashboard' element={<LandlordDashboard />} />
+        <Route path='/list' element={<HouseList />} />
+        <Route path='/card' element={<HouseCard />} />
         
-      </Routes> 
+        <Route path='/profile' element={<Profile />} />
+        <Route path="/details/:id" element={<DetailHousePage />} />
+
+
+           {/* superAdmin authorized */}
+        {role_name === "superAdmin" && (
+          <Route path="/usersList" element={<UserList />} /> 
+        )}
+        {role_name === "superAdmin" && (
+          <Route path="/createUser" element={<CreateUserPage />} />
+        )}
+        {role_name === "superAdmin" && (
+          <Route path="/usersList/:username" element={<EditUserPage />} />
+        )}
+        
+         
+      {/* admin authorized */}
+        {role_name === "admin" && (
+          <Route path="/usersList" element={<UserList />} /> 
+        )}
+        {role_name === "admin" && (
+          <Route path="/createUser" element={<CreateUserPage />} />
+        )}
+        {role_name === "admin" && (
+          <Route path="/usersList/:username" element={<EditUserPage />} />
+        )}
+
+
+            
+        {/* landlord authorization */}
+       {role_name === "landlord" && (
+          <Route path="/createHouse" element={<CreateHouse />} />
+        )}
+        {role_name === "landlord" && (
+          <Route path="/houseList" element={<LandlordDashboard />} />
+        )}
+        {role_name === "admin" && (
+          <Route path="/houseList/:id" element={<EditHouse />} />
+        )}
+
+
+              {/* broker authorization */}
+       {role_name === "broker" && (
+          <Route path="/houseList" element={<BrokerDashboard />} />
+        )}
+        {role_name === "broker" && (
+          <Route path="/createHouse" element={<CreateHouse />} />
+        )}
+        {role_name === "broker" && (
+          <Route path="/houseList/:id" element={<EditHouse />} />
+        )}
+        
+     {/* tenant authorization */}
+     {role_name === "tenant" && (
+          <Route path="/houseList" element={<TenantDashboard />} />
+        )}
+        {role_name === "tenant" && (
+          <Route path="/bidding/:id" element={<Bidding />} />
+        )}
+        
+
+
+      </Routes>
     </div>
   );
 }

@@ -1,30 +1,31 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const register=async(userData)=>{
-const response=await axios.post('/api/users/',userData)
-if(response.data){
-    localStorage.setItem('user',JSON.stringify(response.data))
-} 
-return response.data  
+const baseURL = 'https://house-rental-backend-1-0hiq.onrender.com/api/users/';
+
+const register = async (userData) => {
+  const response = await axios.post(`${baseURL}`, userData);
+  return response.data;
 }
 
-const login=async(userData)=>{
-    const response=await axios.post('api/users/login',userData)
-    if(response.data){
-        localStorage.setItem('user',JSON.stringify(response.data))
-    }
-    return response.data 
-     
-}
-   
-const logout=async()=>{
-localStorage.removeItem('user')
+const login = async (userData) => {
+  const response = await axios.post(`${baseURL}login`, userData);
+  return response.data;
 }
 
-const authService={
-    register,
-    login,
-    logout
-}  
+const getSingleUser = async (id) => {
+  const response = await axios.get(`${baseURL}${id}`);
+  return response.data;
+}
 
-export default authService
+const logout = () => {
+  localStorage.removeItem('user');
+}
+
+const authService = {
+  register,
+  login,
+  logout,
+  getSingleUser
+}
+
+export default authService;
