@@ -49,19 +49,60 @@ export const logout = createAsyncThunk(
   }
 );
 
+export const getAllUser=createAsyncThunk(
+  'auth/getAllUser',
+  async (userData,thunkAPI) => {
+    try {
+      const response = await authService.getAllUser(userData);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+
+)
+export const editUsers=createAsyncThunk(
+  'auth/editUsers',
+  async (id,thunkAPI) => {
+    try {
+      const response = await authService.editUsers(id);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+
+)
+export const deleteUser=createAsyncThunk(
+  'auth/deleteUser',
+  async (id,thunkAPI) => {
+    try {
+      const response = await authService.deleteUser(id);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+
+)
+
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
-    user:{},
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ""
+    editUser: null,
+    singleUser: null,
+    allUser: [],
+    message: "",
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Handling register async action
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
@@ -73,16 +114,60 @@ export const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.message = action.error.message; 
+      })
+
+       // Handling getAllUser async action
+       .addCase(getAllUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.allUser = action.payload; // Update with fetched users
+      })
+      .addCase(getAllUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.error.message; 
+      })
+      // Handling editUsers async action
+      .addCase(editUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.editUser = action.payload; // Update with edited user
+      })
+      .addCase(editUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.error.message; // Corrected error handling
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.isLoading = true;
+        state.user={}
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.editUser=action.payload
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
         state.user = null;
         state.message = action.payload;
       })
+
       .addCase(getSingleUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getSingleUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.singleUser = action.payload;
       })
       .addCase(getSingleUser.rejected, (state, action) => {
         state.isLoading = false;

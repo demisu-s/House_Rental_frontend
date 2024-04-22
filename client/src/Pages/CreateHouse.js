@@ -2,10 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createHouse, removeNewHouse } from "../features/house/houseSlice";
 import ClipLoader from "react-spinners/ClipLoader";
+import { uploadImage } from "../features/upload/uploadSlice";
+import { removeUploadImage, removeUploadError } from "../features/upload/uploadSlice";
+import toast from "react-hot-toast";
 
 const CreateHouse = () => {
   const dispatch = useDispatch();
   const { newHouse, isLoading, isError } = useSelector((state) => state.house);
+  const { uploadImage, errorImage, loadingUploadingImage } = useSelector((state) => state.upload);
+  const [image, setImage] = useState(null);
+  const [fileName, setFileName] = useState("Non Selected");
+
+  const productStatus = [
+    { value: "available", label: "createproduct.available" },
+    { value: "unavailable", label: "createproduct.unavailable" },
+  ];
 
   const [house, setHouse] = useState({
     title: "",
@@ -26,14 +37,17 @@ const CreateHouse = () => {
       [name]: value,
     });
   };
+  useEffect(() => {
+    dispatch(removeUploadImage());
+  }, []);
 
-  const handleImageChange = (event) => {
-    const images = Array.from(event.target.files);
-    setHouse({
-      ...house,
-      images: [...house.images, ...images],
-    });
-  };
+  // const handleImageChange = (event) => {
+  //   const images = Array.from(event.target.files);
+  //   setHouse({
+  //     ...house,
+  //     images: [...house.images, ...images],
+  //   });
+  // };
 
   useEffect(() => {
     if (newHouse) {
@@ -49,9 +63,34 @@ const CreateHouse = () => {
           price: "",
           images: [],
         });
-      }, 60000); // Adjust timeout value as needed
+        setImage("");
+        toast.success("Request done successfully.");
+      }, 60000); 
     }
   }, [newHouse, dispatch]);
+
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    setFileName(file?.name);
+    const formData = new FormData();
+    formData.append("image", file);
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const imageUrl = event.target.result;
+        setImage(imageUrl);
+      };
+
+      reader.readAsDataURL(file);
+    }
+    const sendImage = formData.get("image");
+    dispatch(uploadImage(sendImage));
+  };
 
   const handleCreateHouse = () => {
     setButtonClicked(true);
@@ -71,6 +110,14 @@ const CreateHouse = () => {
               <ClipLoader color="#36d7b7" loading={isLoading} size={50} />
             </div>
           )}
+          {/* {loadingUploadingImage && (
+          <div className="text-center">
+            <ClipLoader color={"#36d7b7"} loading={loadingUploadingImage} size={50} aria-label="Loading Spinner" data-testid="loader" />
+          </div>
+        )}
+         {errorImage && (
+          <div className="bg-red-500 text-white text-lg py-2 px-4 rounded mb-4 text-center">Error While Uploading Image</div>
+        )} */}
 
           {isError && (
             <div className="bg-red-500 text-white text-center py-2 px-4 mb-4">
@@ -138,17 +185,16 @@ const CreateHouse = () => {
           <input
             type="file"
             multiple // Allow selecting multiple files
-            onChange={handleImageChange}
+            onChange={handleImageUpload}
             className="w-full border border-gray-300 rounded-md px-3 py-2 mb-3"
           />
           
           <button
-  className="bg-gray-400 hover:bg-gray-600 text-black font-semibold py-2 px-4 rounded-full mt-4 w-full"
-  onClick={handleCreateHouse}
->
-  Create
-</button>
-
+            className="bg-gray-400 hover:bg-gray-600 text-black font-semibold py-2 px-4 rounded-full mt-4 w-full"
+            onClick={handleCreateHouse}
+          >
+            Create
+          </button>
         </div>
       </div>
     </div>

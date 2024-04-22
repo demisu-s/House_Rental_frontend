@@ -1,10 +1,9 @@
 import './App.css';
 import { Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux"; // Added import for useSelector
-import Dashboard from "./Pages/Dashboard";
+import { useSelector } from "react-redux"; 
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import LandingPage from './LandingPage';
+import LandingPage from './Pages/LandingPage';
 
 import AdminDashboard from './Pages/AdminPage/AdminDashboard';
 import BrokerDashboard from './Pages/BrokerPage/BrokerDashboard';
@@ -12,7 +11,6 @@ import TenantDashboard from './Pages/TenantPage/TenantDashboard';
 import LandlordDashboard from './Pages/LandlordPage/LandlordDashboard';
 import HouseList from './Components/HouseList';
 import HouseCard from './Components/HouseCard';
-import Profile from './Components/Profile';
 import CreateUserPage from './Pages/AdminPage/CreateUserPage'; // Corrected import path
 import EditUserPage from './Pages/AdminPage/EditUserPage';
 import UserList from './Pages/AdminPage/UserList';
@@ -20,6 +18,13 @@ import EditHouse from './Pages/EditHouse';
 import CreateHouse from './Pages/CreateHouse';
 import DetailHousePage from './Pages/DetailHousePage';
 import Bidding from './Pages/TenantPage/Bidding';
+import RequestPage from './Pages/RequestPage';
+import RequestDetailPage from './Pages/RequestDetailPage';
+import ProfilePage from './Pages/ProfilePage';
+import SearchForm from './Components/SearchForm';
+import RequestComponent from './Components/RequestComponent';
+
+
 
 
 
@@ -32,8 +37,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path='/' element={<LandingPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path='/' element={ <LandingPage />} />
+        
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path='/adminDashboard' element={<AdminDashboard />} />
@@ -42,9 +47,22 @@ function App() {
         <Route path='/landlordDashboard' element={<LandlordDashboard />} />
         <Route path='/list' element={<HouseList />} />
         <Route path='/card' element={<HouseCard />} />
-        
-        <Route path='/profile' element={<Profile />} />
+        <Route path="/notification" element={<RequestPage />} />
+        <Route path="/notification/:id" element={<RequestDetailPage />} />
+        <Route path='/profile' element={<ProfilePage />} />
         <Route path="/details/:id" element={<DetailHousePage />} />
+        <Route path="/createHouse" element={<CreateHouse />} />
+        
+ 
+        <Route path="/createUser" element={<CreateUserPage />} />
+        {/* <Route path="/search" element={<SearchForm />} /> */}
+        <Route path="/request" element={<RequestComponent />} />
+
+        
+
+
+
+
 
 
            {/* superAdmin authorized */}

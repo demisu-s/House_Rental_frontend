@@ -4,6 +4,7 @@ import { register } from '../features/auth/authSlice';
 import Header from '../Components/Header';
 import { GoogleLogin } from 'react-google-login';
 
+
 const Register = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -11,51 +12,30 @@ const Register = () => {
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('Tenant'); // Set the default role to 'Tenant'
-
+  const [role, setRole] = useState('Tenant');
   const [formErrors, setFormErrors] = useState({});
-  const [photo, setPhoto] = useState({});
-
+  const [photo, setPhoto] = useState(null); // Changed to null
 
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    //form validation
-    // const errors = {};
-    // if (!firstName.trim()) {
-    //   errors.firstName = 'First name is required';
-    // }
-    // if (!lastName.trim()) {
-    //   errors.lastName = 'Last name is required';
-    // }
-    // if (!email.trim()) {
-    //   errors.email = 'Email is required';
-    // }
-    // if (!password.trim()) {
-    //   errors.password = 'Password is required';
-    // }
 
-    // Set form errors and prevent submission if there are errors
-    // if (Object.keys(errors).length > 0) {
-    //   setFormErrors(errors);
-    //   return;
-    // }
+    // Create a new FormData object
+    const formData = new FormData();
+    // Append the photo to the formData
+    formData.append('photo', photo);
+    // Append other form data fields
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('phone', phone);
+    formData.append('address', address);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('role', role);
 
-    const userData = {
-      firstName,
-      lastName,
-      address,
-      phone,
-      email,
-      password,
-      role,
-      photo,
-    };
-
-    // Dispatch register action
-    dispatch(register(userData));
+    // Dispatch register action with formData
+    dispatch(register(formData));
   };
 
   const handleGoogleSignup = (googleData) => {
@@ -70,7 +50,7 @@ const Register = () => {
 
   const handleGoogleSignupFailure = (error) => {
     console.error('Google Sign-Up failed:', error);
-    // Handling Google Sign-Up failure 
+    // Handling Google Sign-Up failure
   };
 
   return (
@@ -89,10 +69,8 @@ const Register = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
-              {/* {formErrors.firstName && <p className="text-red-500 text-xs italic">{formErrors.firstName}</p>} */}
             </label>
           </div>
-          
           <div className="mb-4">
             <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2">
               Last Name:
@@ -103,7 +81,6 @@ const Register = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
-              {/* {formErrors.lastName && <p className="text-red-500 text-xs italic">{formErrors.lastName}</p>} */}
             </label>
           </div>
           <div className="mb-4">
@@ -116,7 +93,6 @@ const Register = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
-              {/* {formErrors.phone && <p className="text-red-500 text-xs italic">{formErrors.phone}</p>} */}
             </label>
           </div>
           <div className="mb-4">
@@ -129,7 +105,6 @@ const Register = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
-              {/* {formErrors.address && <p className="text-red-500 text-xs italic">{formErrors.address}</p>} */}
             </label>
           </div>
           <div className="mb-4">
@@ -142,7 +117,6 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {/* {formErrors.email && <p className="text-red-500 text-xs italic">{formErrors.email}</p>} */}
             </label>
           </div>
           <div className="mb-4">
@@ -155,48 +129,41 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {/* {formErrors.password && <p className="text-red-500 text-xs italic">{formErrors.password}</p>} */}
             </label>
           </div>
-
           <div className="mb-4">
             <label htmlFor="role" className="block text-gray-700 text-sm font-bold mb-2">
               Role:
               <select
-  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-  id="role"
-  value={role}
-  onChange={(e) => {
-    setRole(e.target.value);
-  }}
->
-  <option value="Landlord">Landlord</option>
-  <option value="Tenant">Tenant</option>
-  <option value="Admin">Admin</option>
-  <option value="Broker">Broker</option>
-  <option value="SuperAdmin">SuperAdmin</option>
-</select>
-
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="role"
+                value={role}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                }}
+              >
+                <option value="Landlord">Landlord</option>
+                <option value="Tenant">Tenant</option>
+                <option value="Admin">Admin</option>
+                <option value="Broker">Broker</option>
+                <option value="SuperAdmin">SuperAdmin</option>
+              </select>
             </label>
           </div>
-          
-
           <div className="mb-4">
-  <label htmlFor="photo" className="block text-gray-700 text-sm font-bold mb-2">
-    Photo:
-  </label>
-  <input
-    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${formErrors.photo ? 'border-red-500' : ''}`}
-    id="photo"
-    type="file"  
-    accept="image/*" 
-    onChange={(e) => setPhoto(e.target.files[0])} 
-  />
- 
-</div>
-
-
-
+            <label htmlFor="photo" className="block text-gray-700 text-sm font-bold mb-2">
+              Photo:
+            </label>
+            <input
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${formErrors.photo ? 'border-red-500' : ''}`}
+              id="photo"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setPhoto(e.target.files[0])} // Set photo state with selected file
+            />
+            {/* Error handling for photo */}
+            {formErrors.photo && <p className="text-red-500 text-xs italic">{formErrors.photo}</p>}
+          </div>
           <div className="flex justify-center mb-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -205,7 +172,6 @@ const Register = () => {
               Register
             </button>
           </div>
-
           <div className="mb-4">
             <GoogleLogin
               clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
@@ -215,7 +181,6 @@ const Register = () => {
               cookiePolicy={'single_host_origin'}
             />
           </div>
-         
         </form>
       </div>
     </div>

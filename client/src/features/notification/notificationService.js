@@ -8,7 +8,7 @@ const notification = async (notification, token) => {
   };
 
   try {
-    const response = await axios.post('/api/houses', notification, config);
+    const response = await axios.post('/api/orders', notification, config);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

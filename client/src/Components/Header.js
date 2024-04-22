@@ -1,10 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getSingleUser } from "../features/auth/authSlice";
 import axios from "axios";
-import { useTranslation } from "react-i18next";
-
+import { Link, useNavigate } from "react-router-dom";
 import { BellIcon, MenuIcon } from '@heroicons/react/outline';
 
 const Header = ({ role }) => {
@@ -13,19 +11,18 @@ const Header = ({ role }) => {
   const [notification, setNotification] = useState([]);
   const [notificationLength, setNotificationLength] = useState(0);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const { t } = useTranslation("global");
 
-  const { user_name } = useSelector((state) => state.auth.user);
+  const { email } = useSelector((state) => state.auth.user || {});
   const { profile_picture } = useSelector((state) => state.auth.singleUser) || {};
   const { notificationId } = useSelector((state) => state.auth.notification || {});
 
   const prevNotificationId = useRef(notificationId);
 
   useEffect(() => {
-    if (user_name) {
-      dispatch(getSingleUser({ user_name }));
+    if (email) {
+      dispatch(getSingleUser({ email }));
     }
-  }, [dispatch, user_name]);
+  }, [dispatch, email]);
 
   useEffect(() => {
     const getAllOrderList = () => {
@@ -84,8 +81,10 @@ const Header = ({ role }) => {
             </div>
           </div>
           <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
-            {role && (role.role === "Broker" || role.role === "Landlord") ? (
+            {role && (role.role === "broker" || role.role === "landlord") ? (
               <>
+              <ul>
+                <li>
                 <Link
                   to="/notification"
                   className="text-gray-700 hover:text-gray-900"
@@ -96,12 +95,16 @@ const Header = ({ role }) => {
                     <span className="inline-block bg-red-600 text-white px-2.5 py-0.5 rounded-full">{notificationLength}</span>
                   )}
                 </Link>
+                </li>
+                <li>
                 <Link
                   to="/createHouse"
                   className="text-black font-bold hover:text-blue-700 ml-4"
                 >
                   Post House
                 </Link>
+                </li>
+                </ul>
               </>
             ) : null}
           </div>
@@ -140,25 +143,44 @@ const Header = ({ role }) => {
       </div>
       <div className="hidden md:hidden">
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <Link
-            to="/profile"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-          >
-            {t("navbar.profile")}
-          </Link>
-          <Link
-            to="/resetpassword"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-          >
-            {t("navbar.resetpassword")}
-          </Link>
-          <button
-            onClick={handleLogOut}
-            type="button"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-          >
-            {t("navbar.logout")}
-          </button>
+          {email ? (
+            <>
+              <Link
+                to="/profile"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+              >
+                Profile
+              </Link>
+              <Link
+                to="/resetpassword"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+              >
+                Reset Password
+              </Link>
+              <button
+                onClick={handleLogOut}
+                type="button"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/register"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+              >
+                Register
+              </Link>
+              <Link
+                to="/login"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+              >
+                Login
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

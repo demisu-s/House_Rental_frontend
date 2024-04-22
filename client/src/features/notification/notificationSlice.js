@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import notification from "./notificationService";
+import notificationService from "./notificationService"; // Changed the import name to avoid conflict
 
-const notification = createSlice({
+const notificationSlice = createSlice({
   name: "notification",
   initialState: {
     notificationId: "",
@@ -9,9 +9,9 @@ const notification = createSlice({
   reducers: {
     setNotificationId: (state, action) => {
       state.notificationId = action.payload;
-      return state;
     },
   },
 });
-export const { setNotificationId } = notification.actions;
-export default notification.reducer;
+
+export const { setNotificationId } = notificationSlice.actions; 
+export default notificationSlice.reducer; 
