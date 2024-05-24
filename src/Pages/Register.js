@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { register } from '../features/auth/authSlice';
 import Header from '../Components/Header';
 import { GoogleLogin } from 'react-google-login';
@@ -17,8 +18,10 @@ const Register = () => {
 
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error } = useSelector((state) => state.auth);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     //form validation
@@ -53,8 +56,12 @@ const Register = () => {
       photo,
     };
 
-    // Dispatch register action
-    dispatch(register(userData));
+    try {
+      await dispatch(register(userData)).unwrap();
+      navigate('/dashboard')
+    } catch (err) {
+      console.error('Failed to register:', err);
+    }
   };
 
   const handleGoogleSignup = (googleData) => {
@@ -88,7 +95,7 @@ const Register = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
-              {/* {formErrors.firstName && <p className="text-red-500 text-xs italic">{formErrors.firstName}</p>} */}
+              {formErrors.firstName && <p className="text-red-500 text-xs italic">{formErrors.firstName}</p>}
             </label>
           </div>
           
@@ -102,7 +109,7 @@ const Register = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
-              {/* {formErrors.lastName && <p className="text-red-500 text-xs italic">{formErrors.lastName}</p>} */}
+              {formErrors.lastName && <p className="text-red-500 text-xs italic">{formErrors.lastName}</p>}
             </label>
           </div>
           <div className="mb-4">
@@ -115,7 +122,7 @@ const Register = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
-              {/* {formErrors.phone && <p className="text-red-500 text-xs italic">{formErrors.phone}</p>} */}
+              {formErrors.phone && <p className="text-red-500 text-xs italic">{formErrors.phone}</p>}
             </label>
           </div>
           <div className="mb-4">
@@ -128,7 +135,7 @@ const Register = () => {
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
-              {/* {formErrors.address && <p className="text-red-500 text-xs italic">{formErrors.address}</p>} */}
+              {formErrors.address && <p className="text-red-500 text-xs italic">{formErrors.address}</p>}
             </label>
           </div>
           <div className="mb-4">
@@ -141,7 +148,7 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {/* {formErrors.email && <p className="text-red-500 text-xs italic">{formErrors.email}</p>} */}
+              {formErrors.email && <p className="text-red-500 text-xs italic">{formErrors.email}</p>}
             </label>
           </div>
           <div className="mb-4">
@@ -154,7 +161,7 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {/* {formErrors.password && <p className="text-red-500 text-xs italic">{formErrors.password}</p>} */}
+              {formErrors.password && <p className="text-red-500 text-xs italic">{formErrors.password}</p>}
             </label>
           </div>
 
@@ -198,8 +205,9 @@ const Register = () => {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
+              disabled={isLoading}
             >
-              Register
+               {isLoading ? 'Registering...' : 'Register'}
             </button>
           </div>
 
@@ -212,7 +220,7 @@ const Register = () => {
               cookiePolicy={'single_host_origin'}
             />
           </div>
-         
+          {error && <p className="text-red-500 text-xs italic">Registration failed: {error.message}</p>}
         </form>
       </div>
     </div>

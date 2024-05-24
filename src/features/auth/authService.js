@@ -1,30 +1,40 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const register=async(userData)=>{
-const response=await axios.post('http://localhost:3000/api/users/',userData)
-if(response.data){
-    localStorage.setItem('user',JSON.stringify(response.data))
-} 
-return response.data  
-}
-
-const login=async(userData)=>{
-    const response=await axios.post('http://localhost:3000/api/users/login',userData)
-    if(response.data){
-        localStorage.setItem('user',JSON.stringify(response.data))
+const register = async (userData) => {
+  try {
+    const response = await axios.post('https://jsonplaceholder.typicode.com/users/', userData);
+    if (response.data) {
+      localStorage.setItem('user', JSON.stringify(response.data));
     }
-    return response.data 
-     
-}
-   
-const logout=async()=>{
-localStorage.removeItem('user')
-}
+    return response.data;
+  } catch (error) {
+    console.error('Error registering user:', error);
+    throw error;
+  }
+};
 
-const authService={
-    register,
-    login,
-    logout
-}  
+const login = async (userData) => {
+  try {
+    const response = await axios.post('https://jsonplaceholder.typicode.com/users/', userData);
+    
+    if (response.data) {
+      localStorage.setItem('user', JSON.stringify(response.data));
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
+};
 
-export default authService
+const logout = async () => {
+  localStorage.removeItem('user');
+};
+
+const authService = {
+  register,
+  login,
+  logout
+};
+
+export default authService;

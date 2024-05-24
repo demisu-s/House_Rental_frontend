@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
 import Header from '../Components/Header';
 import { GoogleLogin } from 'react-google-login';
 
@@ -8,14 +9,18 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const userData = {
       email,
       password,
     };
-    dispatch(login(userData));
+    const resultAction = await dispatch(login(userData)).unwrap();
+    if (resultAction) {
+      navigate('/dashboard');
+    }
   };
 
   const responseGoogle = (response) => {
