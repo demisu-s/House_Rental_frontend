@@ -133,6 +133,7 @@ const CreateHouse = () => {
               type="file"
               id="image"
               name="image"
+              multiple={true}
               onChange={handleChange}
               className={errors.image ? 'error' : ''}
             />
