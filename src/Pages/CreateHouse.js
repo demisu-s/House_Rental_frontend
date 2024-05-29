@@ -1,4 +1,3 @@
-// CreateHouse.js
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../Components/Header';
@@ -73,74 +72,78 @@ const CreateHouse = () => {
   return (
     <div>
       <Header />
-      <div className="container">
-        <h1>Create New House</h1>
-        <form onSubmit={handleSubmit}>
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Create New House</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="form-group">
-            <label htmlFor="title">Title</label>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
             <input
               type="text"
               id="title"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className={errors.title ? 'error' : ''}
+              className={`mt-1 block w-full p-2 border ${errors.title ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
             />
-            {errors.title && <small className="error-text">{errors.title}</small>}
+            {errors.title && <small className="text-red-500">{errors.title}</small>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="location">Location</label>
+            <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
             <input
               type="text"
               id="location"
               name="location"
               value={formData.location}
               onChange={handleChange}
-              className={errors.location ? 'error' : ''}
+              className={`mt-1 block w-full p-2 border ${errors.location ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
             />
-            {errors.location && <small className="error-text">{errors.location}</small>}
+            {errors.location && <small className="text-red-500">{errors.location}</small>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="price">Price</label>
+            <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
             <input
               type="text"
               id="price"
               name="price"
               value={formData.price}
               onChange={handleChange}
-              className={errors.price ? 'error' : ''}
+              className={`mt-1 block w-full p-2 border ${errors.price ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
             />
-            {errors.price && <small className="error-text">{errors.price}</small>}
+            {errors.price && <small className="text-red-500">{errors.price}</small>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
             <textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className={errors.description ? 'error' : ''}
+              className={`mt-1 block w-full p-2 border ${errors.description ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
             />
-            {errors.description && <small className="error-text">{errors.description}</small>}
+            {errors.description && <small className="text-red-500">{errors.description}</small>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="image">Image</label>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image</label>
             <input
               type="file"
               id="image"
               name="image"
               multiple={true}
               onChange={handleChange}
-              className={errors.image ? 'error' : ''}
+              className={`mt-1 block w-full p-2 border ${errors.image ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500`}
             />
-            {errors.image && <small className="error-text">{errors.image}</small>}
+            {errors.image && <small className="text-red-500">{errors.image}</small>}
           </div>
 
-          <button type="submit" disabled={isSubmitting}>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
             {isSubmitting ? 'Submitting...' : 'Submit'}
           </button>
         </form>
