@@ -1,20 +1,21 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Entity from "./Components/Entity";
+import Property from "./Components/Property";
+import Slider from "./Components/Slider";
 
 const LandingPage = () => {
   return (
-    <div className='flex flex-col items-center justify-center h-screen bg-gray-700 text-white'>
-      <h1 className='text-4xl font-bold mb-6'>Welcome to Our Website</h1>
-      <p className='text-lg mb-8'>
-        Explore incredible alternative rental homes at affordable rates for your convenience.
-      </p>
-      <Link
-        to='/login'
-        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
-      >
-        Get Started
-      </Link>
+    <div className="px-12 py-12">
+      <Property />
+
+      <div className="bg-stone-100 px-8 pt-8 pb-4 mt-10 mb-14 rounded-sm">
+        <Entity />
+      </div>
+
+      <div className="bg-stone-100 px-4 pt-6 pb-10 rounded-sm">
+        <hr className="mb-7" />
+        <Slider />
+      </div>
     </div>
   );
 };

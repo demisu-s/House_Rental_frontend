@@ -1,11 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 
 const Dashboard = () => {
+  const [role, setRole] = useState("")
   return (
     <div>
       <Header isLoggedIn={true} />
+
+      {
+      role === "Tenant" ?
       <table>
         <thead>
           <th>Total Houses</th>
@@ -16,7 +21,12 @@ const Dashboard = () => {
           <td>50</td>
         </tbody>
       </table>
+      : <div>
+         <Link className=' px-2 py-1 rounded-sm bg-purple-700 text-white' to="/login">Login</Link> to see your saved info
+        </div>
+      }
     </div>
+    
   );
 };
 
