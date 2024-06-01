@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function Property() {
     const navigate = useNavigate();
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
 
     const handleSubmit = () => {
         navigate('/dashboard');

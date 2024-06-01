@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../Components/Header';
+import { useNavigate, Link } from 'react-router-dom';
 
 const CreateHouse = () => {
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     location: '',
@@ -67,13 +69,18 @@ const CreateHouse = () => {
     } finally {
       setIsSubmitting(false);
     }
+
+    navigate('/dashboard')
   };
 
   return (
     <div>
-      <Header />
+      <Header isLoggedIn={true} />
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Create New House</h1>
+        <div className='flex justify-between'>
+          <h1 className="text-2xl font-bold mb-4">Create New House</h1>
+          <Link className='underline' to='/dashboard'>Dashboard</Link>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="form-group">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
