@@ -5,8 +5,9 @@ export const fetchRole = createAsyncThunk(
     'role/fetchRole',
     async (_, {getState}) => {
         const {auth} = getState();
-        const response = await roleService.fetchRole();
+        const response = await roleService.fetchRole(auth.user.id);
         const data = await response.json();
+        //return response.role
         return data.role;
     }
 );

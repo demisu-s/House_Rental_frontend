@@ -3,6 +3,8 @@ import Entity from "./Components/Entity";
 import Property from "./Components/Property";
 import Slider from "./Components/Slider";
 
+import PropertiesForRent from './Pages/PropertiesForRent';
+
 const LandingPage = () => {
   return (
     <div className="px-12 py-12">
@@ -16,6 +18,8 @@ const LandingPage = () => {
         <hr className="mb-7" />
         <Slider />
       </div>
+
+      <PropertiesForRent />
     </div>
   );
 };

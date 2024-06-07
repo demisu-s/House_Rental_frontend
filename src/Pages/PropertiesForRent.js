@@ -2,7 +2,7 @@ import React from 'react';
 import PropertiesCard from '../Components/PropertiesCard';
 import { Link } from 'react-router-dom';
 
-const PropertiesForSale = () => {
+const PropertiesForRent = () => {
   return (
     <div className='bg-[hsl(0,14%,96%)] max-w-[1000px] flex flex-col justify-center my-10 mx-auto  rounded-md rounded-b-none h-fit'>
       <div className='block'>
@@ -22,4 +22,4 @@ const PropertiesForSale = () => {
   );
 };
 
-export default PropertiesForSale;
+export default PropertiesForRent;
